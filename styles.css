@@ -1,0 +1,245 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins";
+}
+
+.btn1 {
+  padding: 8px 50px;
+  font-size: 2rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  color: #171717;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn1:hover {
+  background-color: #3898ec;
+}
+
+.spinner {
+  margin-top: 10px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 3px solid #f4f4f4;
+  border-right: 3px solid transparent;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* Header */
+.header {
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 2px;
+  box-shadow: 0px 0px 10px #3898ec;
+  background-color: #1f75b5;
+  text-align: center;
+  position: relative;
+}
+
+.header .title {
+  display: inline-block;
+}
+
+.header .challenge_info {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  color: #1e1e1e;
+  cursor: pointer;
+  animation: fadeInOut 0.5s ease-in-out;
+}
+
+.header .challenge_info:hover {
+  color: #f4f4f4;
+}
+
+.colors_info_modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #1e1e1e;
+  border: 2px solid #f4f4f4;
+  border-radius: 5px;
+  animation: fadeInOut 0.5s ease-in-out;
+}
+
+.modal_title {
+  font-size: 1.2rem;
+  text-align: center;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 1px;
+}
+
+.modal_title h3 {
+  color: #1e1e1e;
+}
+
+.modal_title #close_modal {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  color: #1e1e1e;
+  cursor: pointer;
+}
+
+.modal_title #close_modal:hover {
+  opacity: .7;
+}
+
+.colors_info_modal p {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0 10px;
+}
+
+/* Start Container */
+.start_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.generating_color_container {
+  display: none;
+  font-size: 2rem;
+  text-align: center;
+  animation: fadeInOut 0.5s ease-in-out;
+}
+
+/* Waiting Container */
+.waiting_container {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: fadeInOut 0.5s ease-in-out;
+}
+
+.waiting_container h3 {
+  font-size: 3rem;
+}
+
+.waiting_container p {
+  font-size: 1rem;
+}
+
+/* Challenge Container */
+.challenge_container {
+  display: none;
+  padding: 5px;
+  animation: fadeInOut 0.5s ease-in-out;
+}
+
+.challenge_container #code_text {
+  height: 600px;
+  white-space: pre;
+  font-size: 1rem;
+  padding: 10px;
+  overflow: auto;
+  background-color: #1e1e1e;
+  border: 1px solid #f4f4f4;
+}
+
+.submit_answer {
+  padding: 5px;
+  position: relative;
+}
+
+.submit_answer #submit {
+  margin-top: 20px;
+  padding: 8px 30px;
+  font-size: 1.2rem;
+  position: absolute;
+  right: 0;
+}
+
+.submit_answer #incorrect_answer {
+  display: none;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ea3943;
+  position: absolute;
+}
+
+.challenge_container input {
+  display: inline-block;
+  background-color: #f4f4f4;
+  color: #1e1e1e;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.2em 0.5em;
+  border-radius: 0;
+  vertical-align: middle; /*to align with the surrounding text*/
+}
+
+.challenge_container .input_large {
+  width: 150px;
+}
+
+.challenge_container .input_small {
+  width: 50px;
+}
+
+
+/* Win Container */
+.win_container {
+  width: 100%;
+  height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #16c784;
+  animation: fadeInOut 0.5s ease-in-out;
+}
+
+.win_container h3 {
+  font-size: 2.5rem;
+}
+
+.win_container #try_again {
+  padding: 8px 30px;
+  font-size: 1.5rem;
+  border: 1px solid #f4f4f4;
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="A fill the blank challenge for edrys-lite."
+    />
+    <meta name="show-in" content="station" />
+    <title>Edrys Fill The Blank Challenge</title>
+
+    <script src="https://cross-lab-project.github.io/edrys-Lite/module/edrys.js"></script>
+
+    <script
+      defer
+      src="https://cross-lab-project.github.io/edrys-Lite/module/vendor/alpine.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cross-lab-project.github.io/edrys-Lite/module/vendor/water.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="header">
+        <h1 class="title">Fill The Blank</h1>
+        <div class="challenge_info" title="RGB colors info"><i class="fa-solid fa-circle-info"></i></div>
+      </div>
+
+      <div class="colors_info_modal">
+        <div class="modal_title">
+          <h3>Colors RGB Values</h3>
+          <div id="close_modal" title="Close Info Box"><i class="fa-solid fa-circle-xmark"></i></div>
+        </div>
+        <p style="color: red;">Red: (R: 255, G: 0, B: 0)</p>
+        <p style="color: green;">Green: (R: 0, G: 255, B: 0)</p>
+        <p style="color: blue;">Blue: (R: 0, G: 0, B: 255)</p>
+        <p style="color: yellow;">Yellow: (R: 255, G: 255, B: 0)</p>
+        <p style="color: cyan;">Cyan: (R: 0, G: 255, B: 255)</p>
+        <p style="color: purple;">Purple: (R: 128, G: 0, B: 128)</p>
+        <p style="color: white;">White: (R: 255, G: 255, B: 255)</p>
+      </div>
+
+      <div class="start_container">
+        <button class="btn1" id="start_challenge" title="Start the challenge">
+          Start
+        </button>
+        <div class="generating_color_container">
+          <p>Generating a color, please wait...</p>
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <div class="waiting_container">
+        <h3>The chosen color is: <span id="chosen_color"></span></h3>
+        <p>Challenge will start in <span id="countdown"></span></p>
+      </div>
+
+      <div class="challenge_container">
+        <div id="code_text"></div>
+        <div class="submit_answer">
+          <p id="incorrect_answer">Incorrect Answer, try again!!</p>
+          <button class="btn1" id="submit">Submit</button>
+        </div>
+      </div>
+
+      <div class="win_container">
+        <h3>Congratulations! You have solved the challenge.</h3>
+        <button class="btn1" id="try_again">Try Again</button>
+      </div>
+    </div>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
