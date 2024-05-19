@@ -7,10 +7,10 @@
 
     <meta
       name="description"
-      content="A fill the blank challenge for edrys-lite."
+      content="A fill the blank challenge to change the color of an RGB LED for edrys-lite."
     />
     <meta name="show-in" content="station" />
-    <title>Edrys Fill The Blank Challenge</title>
+    <title>Edrys RGB LED Challenge</title>
 
     <script src="https://cross-lab-project.github.io/edrys-Lite/module/edrys.js"></script>
 
@@ -34,7 +34,7 @@
   <body>
     <div class="app">
       <div class="header">
-        <h1 class="title">Fill The Blank</h1>
+        <h1 class="title">CHANGE LED COLOR</h1>
         <div class="challenge_info" title="RGB colors info"><i class="fa-solid fa-circle-info"></i></div>
       </div>
 
@@ -48,7 +48,7 @@
         <p style="color: blue;">Blue: (R: 0, G: 0, B: 255)</p>
         <p style="color: yellow;">Yellow: (R: 255, G: 255, B: 0)</p>
         <p style="color: cyan;">Cyan: (R: 0, G: 255, B: 255)</p>
-        <p style="color: purple;">Purple: (R: 128, G: 0, B: 128)</p>
+        <p style="color: purple;">Purple: (R: 255, G: 0, B: 255)</p>
         <p style="color: white;">White: (R: 255, G: 255, B: 255)</p>
       </div>
 
@@ -70,7 +70,7 @@
       <div class="challenge_container">
         <div id="code_text"></div>
         <div class="submit_answer">
-          <p id="incorrect_answer">Incorrect Answer, try again!!</p>
+          <p id="feedback"></p>
           <button class="btn1" id="submit">Submit</button>
         </div>
       </div>

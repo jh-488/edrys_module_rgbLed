@@ -60,8 +60,6 @@ body {
 /* Header */
 .header {
   font-size: 1.2rem;
-  margin: 0;
-  padding: 2px;
   box-shadow: 0px 0px 10px #3898ec;
   background-color: #1f75b5;
   text-align: center;
@@ -86,6 +84,11 @@ body {
 
 .header .challenge_info:hover {
   color: #f4f4f4;
+}
+
+.header .challenge_info i {
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px #f4f4f4;
 }
 
 .colors_info_modal {
@@ -135,6 +138,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  animation: fadeInOut 0.5s ease-in-out;
 }
 
 .generating_color_container {
@@ -193,11 +197,10 @@ body {
   right: 0;
 }
 
-.submit_answer #incorrect_answer {
+.submit_answer #feedback {
   display: none;
   font-size: 2rem;
   font-weight: 600;
-  color: #ea3943;
   position: absolute;
 }
 
@@ -241,5 +244,5 @@ body {
 .win_container #try_again {
   padding: 8px 30px;
   font-size: 1.5rem;
-  border: 1px solid #f4f4f4;
+  border: 1px solid #1f75b5;
 }

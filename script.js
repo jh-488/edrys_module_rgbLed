@@ -1,4 +1,4 @@
-import { colors } from './colorValues.js';
+import { colors, challengeTemplates, challengeAnswers, requiredInputs, finalCode } from './challengeData.js';
 
 const startContainer = document.querySelector('.start_container');
 const startChallenge = document.getElementById('start_challenge');
@@ -11,7 +11,6 @@ const countdown = document.getElementById('countdown');
 const challengeContainer = document.querySelector('.challenge_container');
 const codeText = document.getElementById('code_text');
 const submitButton = document.getElementById('submit');
-const incorrectAnswer = document.getElementById('incorrect_answer');
 
 const winContainer = document.querySelector('.win_container');
 const tryAgainButton = document.getElementById('try_again');
@@ -21,35 +20,11 @@ const colorsInfoModal = document.querySelector('.colors_info_modal');
 const closeModalButton = document.getElementById('close_modal');
 
 let randomColor;
+let challengeIndex;
 
-const testText = `
-    int redPin= 12;
-    int greenPin = 11;
-    int  bluePin = 13;
-
-    void setup() {
-        pinMode(<input class="input_large" type="text" id="redPin" name="redPin" />,  <input class="input_large" type="text" id="output" name="output" />);              
-        pinMode(greenPin, OUTPUT);
-        pinMode(bluePin, OUTPUT);
-    }
-
-    void  loop() {
-        setColor( <input class="input_small" type="text" id="redValue" name="redValue" />, <input class="input_small" type="text" id="greenValue" name="greenValue" />, <input class="input_small" type="text" id="blueValue" name="blueValue" />); 
-    }
-
-    void setColor(int redValue, int greenValue,  int blueValue) {
-        analogWrite(redPin, redValue);
-        analogWrite(<input class="input_large" type="text" id="greenPin" name="greenPin" />,  greenValue);
-        analogWrite(bluePin, <input class="input_large" type="text" id="blueValueArg" name="blueValueArg" />);
-    }
-    `
-;
 
 Edrys.onReady(() => {
     console.log("Module Fill The Blank is ready!!");
-
-    //codeText.innerHTML = Edrys.module.config.codeText;
-    codeText.innerHTML = testText;
 });
 
 startChallenge.onclick = () => {
@@ -65,6 +40,9 @@ startChallenge.onclick = () => {
 };
 
 const startCountdown = () => {
+    challengeIndex = Math.floor(Math.random() * challengeTemplates.length);
+    codeText.innerHTML = challengeTemplates[challengeIndex];
+
     const randomIndex = Math.floor(Math.random() * colors.length);
     randomColor = colors[randomIndex];
 
@@ -86,29 +64,35 @@ const startCountdown = () => {
 };
 
 
-submitButton.onclick = () => {
-    const redPin = document.getElementById('redPin').value;
-    const output = document.getElementById('output').value;
-    const redValue = +document.getElementById('redValue').value;
-    const greenValue = +document.getElementById('greenValue').value;
-    const blueValue = +document.getElementById('blueValue').value;
-    const greenPin = document.getElementById('greenPin').value;
-    const blueValueArg = document.getElementById('blueValueArg').value;
+const getUsersAnswer = () => {
+    const usersAnswers = {};
 
-    /*challengeContainer.style.display = 'none';
-    winContainer.style.display = 'flex';*/
-
-    if (redPin === 'redPin' && output === 'OUTPUT' && redValue === randomColor.redValue && greenValue === randomColor.greenValue && blueValue === randomColor.blueValue && greenPin === 'greenPin' && blueValueArg === 'blueValue') {
-        challengeContainer.style.display = 'none';
-        ChallengeInfoButton.style.display = 'none';
-        colorsInfoModal.style.display = 'none';
-        winContainer.style.display = 'flex';
-    } else {
-        incorrectAnswer.style.display = 'block';
-        setTimeout(() => {
-            incorrectAnswer.style.display = 'none';
-        }, 3000);
+    for (const input of requiredInputs[challengeIndex]) {
+        if (input === 'redValue' || input === 'greenValue' || input === 'blueValue') {
+            usersAnswers[input] = +document.getElementById(input).value;
+        } else {
+            usersAnswers[input] = document.getElementById(input).value;
+        }
     }
+
+    return usersAnswers;
+};
+
+submitButton.onclick = () => {
+    const usersAnswers = getUsersAnswer();
+    const correctAnswers = challengeAnswers( challengeIndex, randomColor);
+
+    for (const key in correctAnswers) {
+        if (correctAnswers[key] !== usersAnswers[key]) {
+            changeFeedback("Incorrect Answer, try again!!", "#ea3943");
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 3000);
+            return;
+        }
+    };
+
+    sendSketch();
 };
 
 
@@ -125,4 +109,46 @@ ChallengeInfoButton.onclick = () => {
 
 closeModalButton.onclick = () => {
     colorsInfoModal.style.display = 'none';
+};
+
+
+let socket = new WebSocket(Edrys?.module?.serverURL || "ws://localhost:8080");
+
+const sendSketch = () => {
+    const code = finalCode(randomColor);
+
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+        feedback.style.display = 'block';
+        changeFeedback("Server not connected, please try again later!!", "#ea3943");
+    } else {
+        feedback.style.display = 'block';
+        changeFeedback("Uploading to the board...", "#f4f4f4");
+        socket.send(JSON.stringify({
+            code: code,
+            challengeId: Edrys.module.challengeId,
+        }))
+    }
+};
+
+socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+
+    if (data.error) {
+        feedback.style.display = 'block';
+        changeFeedback("Internal server error, please try again later!!", "#ea3943");
+    } else {
+        feedback.style.display = 'none';
+        challengeContainer.style.display = 'none';
+        ChallengeInfoButton.style.display = 'none';
+        colorsInfoModal.style.display = 'none';
+        winContainer.style.display = 'flex';
+    }
+};
+
+
+const changeFeedback = (message, color) => {
+    const feedback = document.getElementById('feedback');
+
+    feedback.style.color = color;
+    feedback.innerHTML = message;
 };
