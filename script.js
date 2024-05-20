@@ -84,6 +84,7 @@ submitButton.onclick = () => {
 
     for (const key in correctAnswers) {
         if (correctAnswers[key] !== usersAnswers[key]) {
+            feedback.style.display = 'block';
             changeFeedback("Incorrect Answer, try again!!", "#ea3943");
             setTimeout(() => {
                 feedback.style.display = 'none';
