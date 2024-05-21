@@ -98,7 +98,7 @@ submitButton.onclick = () => {
         }
     };
 
-    Edrys.sendMessage("send-sketch", "Send Sketch to the server");
+    Edrys.sendMessage("send-sketch", JSON.stringify({ redValue: randomColor.redValue, greenValue: randomColor.greenValue, blueValue: randomColor.blueValue }));
 };
 
 
@@ -120,19 +120,19 @@ closeModalButton.onclick = () => {
 
 let socket = new WebSocket(Edrys?.module?.serverURL || "ws://localhost:8080");
 
-const sendSketch = () => {
-    const code = finalCode(randomColor);
+const sendSketch = (color) => {
+    const code = finalCode(color);
 
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-        feedback.style.display = 'block';
-        changeFeedback("Server not connected, please try again later!!", "#ea3943");
-    } else {
-        feedback.style.display = 'block';
-        changeFeedback("Uploading to the board...", "#f4f4f4");
-        socket.send(JSON.stringify({
-            code: code,
-            challengeId: Edrys.module.challengeId,
-        }))
+    if (Edrys.role === "station") {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+            Edrys.sendMessage("feedback", JSON.stringify({ text: "Server not connected, please try again later!!", color: "#ea3943" }));
+        } else {
+            socket.send(JSON.stringify({
+                code: code,
+                challengeId: Edrys.module.challengeId,
+            }))
+            Edrys.sendMessage("feedback", JSON.stringify({ text: "Uploading to the board...", color: "#f4f4f4" }));
+        }
     }
 };
 
@@ -140,14 +140,9 @@ socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
 
     if (data.error) {
-        feedback.style.display = 'block';
-        changeFeedback("Internal server error, please try again later!!", "#ea3943");
+        Edrys.sendMessage("feedback", JSON.stringify({ text: "Internal server error, please try again later!!", color: "#ea3943" }));
     } else {
-        feedback.style.display = 'none';
-        challengeContainer.style.display = 'none';
-        ChallengeInfoButton.style.display = 'none';
-        colorsInfoModal.style.display = 'none';
-        winContainer.style.display = 'flex';
+        Edrys.sendMessage("challenge-solved", "Challenge solved successfully!!");
     }
 };
 
@@ -162,6 +157,19 @@ const changeFeedback = (message, color) => {
 
 Edrys.onMessage(({ from, subject, body }) => {
     if (subject === "send-sketch") {
-        sendSketch();
+        const color = JSON.parse(body);
+        sendSketch(color);
+    } else if (subject === "challenge-solved") {
+        feedback.style.display = 'none';
+        startContainer.style.display = 'none';
+        challengeContainer.style.display = 'none';
+        ChallengeInfoButton.style.display = 'none';
+        colorsInfoModal.style.display = 'none';
+        winContainer.style.display = 'flex';
+    } else if (subject === "feedback") {
+        const data = JSON.parse(body);
+
+        feedback.style.display = 'block';
+        changeFeedback(data.text, data.color);
     }
 });
