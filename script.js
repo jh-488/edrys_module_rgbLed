@@ -123,18 +123,16 @@ let socket = new WebSocket(Edrys?.module?.serverURL || "ws://localhost:8080");
 const sendSketch = () => {
     const code = finalCode(randomColor);
 
-    if (Edrys.role === "station") {
-        if (!socket || socket.readyState !== WebSocket.OPEN) {
-            feedback.style.display = 'block';
-            changeFeedback("Server not connected, please try again later!!", "#ea3943");
-        } else {
-            feedback.style.display = 'block';
-            changeFeedback("Uploading to the board...", "#f4f4f4");
-            socket.send(JSON.stringify({
-                code: code,
-                challengeId: Edrys.module.challengeId,
-            }))
-        }
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+        feedback.style.display = 'block';
+        changeFeedback("Server not connected, please try again later!!", "#ea3943");
+    } else {
+        feedback.style.display = 'block';
+        changeFeedback("Uploading to the board...", "#f4f4f4");
+        socket.send(JSON.stringify({
+            code: code,
+            challengeId: Edrys.module.challengeId,
+        }))
     }
 };
 
