@@ -25,6 +25,11 @@ let challengeIndex;
 
 Edrys.onReady(() => {
     console.log("Module Fill The Blank is ready!!");
+
+    const randomChallengeIdx = Math.floor(Math.random() * challengeTemplates.length);
+    const randomColorIdx = Math.floor(Math.random() * colors.length);
+    Edrys.setItem("challengeIndex", randomChallengeIdx);
+    Edrys.setItem("randomIndex", randomColorIdx);
 });
 
 startChallenge.onclick = () => {
@@ -40,11 +45,11 @@ startChallenge.onclick = () => {
 };
 
 const startCountdown = () => {
-    challengeIndex = Math.floor(Math.random() * challengeTemplates.length);
+    challengeIndex = Edrys.getItem("challengeIndex")
     codeText.innerHTML = challengeTemplates[challengeIndex];
 
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    randomColor = colors[randomIndex];
+    const randomColorIndex = Edrys.getItem("randomIndex");
+    randomColor = colors[randomColorIndex];
 
     chosenColor.style.color = `${randomColor.name}`;
     chosenColor.innerText = randomColor.name;
@@ -93,7 +98,7 @@ submitButton.onclick = () => {
         }
     };
 
-    sendSketch();
+    Edrys.sendMessage("send-sketch", "Send Sketch to the server");
 };
 
 
@@ -153,3 +158,10 @@ const changeFeedback = (message, color) => {
     feedback.style.color = color;
     feedback.innerHTML = message;
 };
+
+
+Edrys.onMessage(({ from, subject, body }) => {
+    if (subject === "send-sketch") {
+        sendSketch();
+    }
+});
