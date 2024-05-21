@@ -89,11 +89,7 @@ submitButton.onclick = () => {
 
     for (const key in correctAnswers) {
         if (correctAnswers[key] !== usersAnswers[key]) {
-            feedback.style.display = 'block';
-            changeFeedback("Incorrect Answer, try again!!", "#ea3943");
-            setTimeout(() => {
-                feedback.style.display = 'none';
-            }, 3000);
+            Edrys.sendMessage("wrong-answer", "Wrong Answer, try again!!");
             return;
         }
     };
@@ -163,7 +159,13 @@ const changeFeedback = (message, color) => {
 
 
 Edrys.onMessage(({ from, subject, body }) => {
-    if (subject === "send-sketch") {
+    if (subject === "wrong-answer") {
+        feedback.style.display = 'block';
+        changeFeedback("Wrong Answer, try again!!", "#ea3943");
+        setTimeout(() => {
+            feedback.style.display = 'none';
+        }, 3000);
+    } else if (subject === "send-sketch") {
         sendSketch();
     }
 });

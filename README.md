@@ -7,6 +7,6 @@ After starting the challenge the module generates a random color and a challenge
 Use this URL to add the module to your class:
 
 ```
-    TODO
+    https://jh-488.github.io/edrys_module_rgbLed/index.html
 ```
 
