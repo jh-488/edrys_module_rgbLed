@@ -29,7 +29,7 @@ Edrys.onReady(() => {
     const randomChallengeIdx = Math.floor(Math.random() * challengeTemplates.length);
     const randomColorIdx = Math.floor(Math.random() * colors.length);
     Edrys.setItem("challengeIndex", randomChallengeIdx);
-    Edrys.setItem("randomIndex", randomColorIdx);
+    Edrys.setItem("randomColorIndex", randomColorIdx);
 });
 
 startChallenge.onclick = () => {
@@ -45,10 +45,10 @@ startChallenge.onclick = () => {
 };
 
 const startCountdown = () => {
-    challengeIndex = Edrys.getItem("challengeIndex")
+    challengeIndex = Edrys.getItem("challengeIndex");
     codeText.innerHTML = challengeTemplates[challengeIndex];
 
-    const randomColorIndex = Edrys.getItem("randomIndex");
+    const randomColorIndex = Edrys.getItem("randomColorIndex");
     randomColor = colors[randomColorIndex];
 
     chosenColor.style.color = `${randomColor.name}`;
@@ -85,12 +85,10 @@ const getUsersAnswer = () => {
 
 submitButton.onclick = () => {
     const usersAnswers = getUsersAnswer();
-    const correctAnswers = challengeAnswers( challengeIndex, randomColor);
+    const correctAnswers = challengeAnswers(+challengeIndex, randomColor);
 
-    let challengeSolved = true;
     for (const key in correctAnswers) {
         if (correctAnswers[key] !== usersAnswers[key]) {
-            challengeSolved = false;
             feedback.style.display = 'block';
             changeFeedback("Incorrect Answer, try again!!", "#ea3943");
             setTimeout(() => {
@@ -100,9 +98,7 @@ submitButton.onclick = () => {
         }
     };
 
-    if (challengeSolved) {
-        Edrys.sendMessage("send-sketch", "Send Sketch to the server");
-    };
+    Edrys.sendMessage("send-sketch", "Send Sketch to the server");
 };
 
 
