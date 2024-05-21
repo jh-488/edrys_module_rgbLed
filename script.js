@@ -76,7 +76,7 @@ const getUsersAnswer = () => {
         if (input === 'redValue' || input === 'greenValue' || input === 'blueValue') {
             usersAnswers[input] = +document.getElementById(input).value;
         } else {
-            usersAnswers[input] = document.getElementById(input).value;
+            usersAnswers[input] = document.getElementById(input).value.trim();
         }
     }
 
