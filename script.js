@@ -36,14 +36,16 @@ Edrys.onReady(() => {
     Edrys.setItem("randomColorIndex", randomColorIdx);
 });
 
+const changeTab = (showContainers, hideContainers, displayStyle) => {
+    hideContainers.forEach(container => container.style.display = 'none');
+    showContainers.forEach(container => container.style.display = displayStyle);
+};
+
 startChallenge.onclick = () => {
-    startChallenge.style.display = 'none';
-    generatingColorContainer.style.display = 'block';
+    changeTab([generatingColorContainer], [startChallenge], "block");
 
     setTimeout(() => {
-        startContainer.style.display = 'none';
-        generatingColorContainer.style.display = 'none';
-        waitingContainer.style.display = 'block';
+        changeTab([waitingContainer], [startContainer, generatingColorContainer], "block");
         startCountdown();
     }, 3000);
 };
@@ -65,8 +67,7 @@ const startCountdown = () => {
         countdown.innerText = count;
         if (count === 0) {
             clearInterval(interval);
-            waitingContainer.style.display = 'none';
-            challengeContainer.style.display = 'block';
+            changeTab([challengeContainer], [waitingContainer], "block");
             ChallengeInfoButton.style.display = 'inline-block';
         }
     }, 1000);
@@ -107,9 +108,7 @@ submitButton.onclick = () => {
 
 
 tryAgainButton.onclick = () => {
-    winContainer.style.display = 'none';
-    startContainer.style.display = 'block';
-    startChallenge.style.display = 'block';
+    changeTab([startContainer, startChallenge], [winContainer], "block");
 };
 
 
@@ -166,15 +165,10 @@ Edrys.onMessage(({ from, subject, body }) => {
     } else if (subject === "challenge-solved") {
         if (Edrys.role !== "station") {
             feedback.style.display = 'none';
-            challengeContainer.style.display = 'none';
-            ChallengeInfoButton.style.display = 'none';
-            colorsInfoModal.style.display = 'none';
-            winContainer.style.display = 'flex';
+            changeTab([winContainer], [challengeContainer, ChallengeInfoButton, colorsInfoModal], "flex");
         } 
         if (Edrys.module.challengeType === "multiplayer") {
-            winContainer.style.display = 'none';
-            startContainer.style.display = 'block';
-            startChallenge.style.display = 'block';
+            changeTab([startContainer, startChallenge], [winContainer], "block");
             app.classList.add("disabled");
         }
     } else if (subject === "feedback") {
@@ -186,7 +180,7 @@ Edrys.onMessage(({ from, subject, body }) => {
 });
 
 
-// Handling the multiplayer mode
+// Handling the multiplayer mode messages
 
 function getShortPeerID(id) {
     const ids = id.split('_');
