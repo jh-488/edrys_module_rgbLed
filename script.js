@@ -181,35 +181,10 @@ Edrys.onMessage(({ from, subject, body }) => {
 
 
 // Handling the multiplayer mode messages
-
-function getShortPeerID(id) {
-    const ids = id.split('_');
-  
-    if (ids.length == 2) {
-      return ids[0].slice(6)
-    }
-  
-    return id
-};
-
-
-let peerID;
-// get user short id from edrys
-window.addEventListener("message", (message) => {
-    if (message.origin !== "http://localhost:6999") {
-      return;
-    }
-  
-    if (message.data.username) {
-        peerID = getShortPeerID(message.data.username);
-    }
-});
-
-
 Edrys.onMessage(({ from, subject, body, module }) => {
-    if (subject === "player-turn" && body === peerID) {
+    if (subject === "player-turn" && body === Edrys.liveUser.displayName) {
         app.classList.remove("disabled");
-    } else if (subject === "player-turn" && body !== peerID) {
+    } else if (subject === "player-turn" && body !== Edrys.liveUser.displayName) {
         app.classList.add("disabled");
     } 
 }, (promiscuous = true));
