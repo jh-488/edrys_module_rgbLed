@@ -30,8 +30,7 @@ Edrys.onReady(() => {
         app.classList.add("disabled");
     }
 
-    //const randomChallengeIdx = Math.floor(Math.random() * challengeTemplates.length);
-    const randomChallengeIdx = 1;
+    const randomChallengeIdx = Math.floor(Math.random() * challengeTemplates.length);
     const randomColorIdx = Math.floor(Math.random() * colors.length);
     Edrys.setItem("challengeIndex", randomChallengeIdx);
     Edrys.setItem("randomColorIndex", randomColorIdx);
