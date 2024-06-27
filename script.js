@@ -30,7 +30,8 @@ Edrys.onReady(() => {
         app.classList.add("disabled");
     }
 
-    const randomChallengeIdx = Math.floor(Math.random() * challengeTemplates.length);
+    //const randomChallengeIdx = Math.floor(Math.random() * challengeTemplates.length);
+    const randomChallengeIdx = 1;
     const randomColorIdx = Math.floor(Math.random() * colors.length);
     Edrys.setItem("challengeIndex", randomChallengeIdx);
     Edrys.setItem("randomColorIndex", randomColorIdx);
@@ -93,13 +94,25 @@ submitButton.onclick = () => {
     const correctAnswers = challengeAnswers(+challengeIndex, randomColor);
 
     for (const key in correctAnswers) {
-        if (correctAnswers[key] !== usersAnswers[key]) {
-            feedback.style.display = 'block';
-            changeFeedback("Incorrect Answer, try again!!", "#ea3943");
-            setTimeout(() => {
-                feedback.style.display = 'none';
-            }, 3000);
-            return;
+        // some answers have multiple correct answers
+        if (correctAnswers[key] instanceof Array) {
+            if(!correctAnswers[key].includes(usersAnswers[key])) {
+                feedback.style.display = 'block';
+                changeFeedback("Incorrect Answer, try again!!", "#ea3943");
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 3000);
+                return;
+            }
+        } else {
+            if (correctAnswers[key] !== usersAnswers[key]) {
+                feedback.style.display = 'block';
+                changeFeedback("Incorrect Answer, try again!!", "#ea3943");
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 3000);
+                return;
+            }
         }
     };
 
@@ -326,7 +339,7 @@ const challengeAnswers = (challengeIdx, randomColor) => {
                 redValue: randomColor.redValue,
                 greenValue: randomColor.greenValue,
                 blueValue: randomColor.blueValue,
-                analogWrite: 'analogWrite',
+                analogWrite: ['analogWrite', 'digitalWrite'],
             };
         case 2:
             return {
